@@ -50,7 +50,7 @@ class LoginController extends GetxController {
         Get.snackbar(
           'Form',
           'Form field is not valid',
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.red,
           colorText: Get.isDarkMode ? Colors.white : Colors.black,
           margin: const EdgeInsets.all(15),
@@ -75,9 +75,9 @@ class LoginController extends GetxController {
       Get.snackbar(
         'Success',
         'Login Successfully',
+        backgroundColor: Colors.black87,
       );
       isLoading.value = false;
-
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         'Warning',
@@ -110,6 +110,11 @@ class LoginController extends GetxController {
       // Once signed in, return the UserCredential
       await _auth.signInWithCredential(credentials);
       Get.to(() => const HomeScreen());
+      Get.snackbar(
+        'Success',
+        'Login Successfully',
+        backgroundColor: Colors.black87,
+      );
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         'Warning',
@@ -126,56 +131,55 @@ class LoginController extends GetxController {
   }
 
   /// SignIn With Facebook
-  // Future<void> sigInFacebook() async {
-  //   try {
-  //     // Trigger the sign-in flow
-  //     final LoginResult loginResult = await FacebookAuth.instance.login();
-  //
-  //     // Create a credential from the access token
-  //     final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
-  //
-  //     // Once signed in, return the UserCredential
-  //     _auth.signInWithCredential(facebookAuthCredential);
-  //     Get.to(() => const HomeScreen());
-  //   } on FirebaseAuthException catch (e) {
-  //     Get.snackbar(
-  //       'Warning',
-  //       e.toString(),
-  //       backgroundColor: Colors.red,
-  //     );
-  //   } catch (e) {
-  //     Get.snackbar(
-  //       'Warning',
-  //       e.toString(),
-  //       backgroundColor: Colors.red,
-  //     );
-  //   }
-  // }
+// Future<void> sigInFacebook() async {
+//   try {
+//     // Trigger the sign-in flow
+//     final LoginResult loginResult = await FacebookAuth.instance.login();
+//
+//     // Create a credential from the access token
+//     final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+//
+//     // Once signed in, return the UserCredential
+//     _auth.signInWithCredential(facebookAuthCredential);
+//     Get.to(() => const HomeScreen());
+//   } on FirebaseAuthException catch (e) {
+//     Get.snackbar(
+//       'Warning',
+//       e.toString(),
+//       backgroundColor: Colors.red,
+//     );
+//   } catch (e) {
+//     Get.snackbar(
+//       'Warning',
+//       e.toString(),
+//       backgroundColor: Colors.red,
+//     );
+//   }
+// }
 
   /// SignIn With GitHub
-  // Future<void> signInGitHub() async{
-  //   // Create a GitHubSignIn instance
-  //   final GitHubSignIn gitHubSignIn = GitHubSignIn(
-  //       clientId: 'c938d83b08bf9c63f25e',
-  //       clientSecret: '2596f7b8f222877e038dca87135c5f7da266fb7f',
-  //       redirectUrl:
-  //       'https://fir-auth-test-bf4ec.firebaseapp.com/__/auth/handler');
-  //
-  //   // Trigger the sign-in flow
-  //   final result = await gitHubSignIn.signIn(context);
-  //
-  //   // Create a credential from the access token
-  //   final AuthCredential githubAuthCredential =
-  //   GithubAuthProvider.credential(result.token);
-  //   _isLoading = true;
-  //   notifyListeners();
-  //   // Once signed in, return the UserCredential
-  //   userCredential = await auth.signInWithCredential(githubAuthCredential);
-  // }
+// Future<void> signInGitHub() async{
+//   // Create a GitHubSignIn instance
+//   final GitHubSignIn gitHubSignIn = GitHubSignIn(
+//       clientId: 'c938d83b08bf9c63f25e',
+//       clientSecret: '2596f7b8f222877e038dca87135c5f7da266fb7f',
+//       redirectUrl:
+//       'https://fir-auth-test-bf4ec.firebaseapp.com/__/auth/handler');
+//
+//   // Trigger the sign-in flow
+//   final result = await gitHubSignIn.signIn(context);
+//
+//   // Create a credential from the access token
+//   final AuthCredential githubAuthCredential =
+//   GithubAuthProvider.credential(result.token);
+//   _isLoading = true;
+//   notifyListeners();
+//   // Once signed in, return the UserCredential
+//   userCredential = await auth.signInWithCredential(githubAuthCredential);
+// }
 
   /// SignIn With Linkedin
-  // Future<void> signInLinkedin() async{
-  //
-  // }
-
+// Future<void> signInLinkedin() async{
+//
+// }
 }

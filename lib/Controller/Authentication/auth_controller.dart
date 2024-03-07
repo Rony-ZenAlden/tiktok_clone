@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tiktok_clone/Controller/Authentication/signin_controller.dart';
@@ -123,13 +124,14 @@ class AuthController extends GetxController {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
-      Get.snackbar('Warning', e.toString());
+      Get.snackbar('Warning', e.toString(),backgroundColor: Colors.black87,);
     }
   }
 
   /// Check User Situation
   goToScreen(User? currentUser) {
     // When user is not login
+    // When user click on logout button
     if (currentUser == null) {
       Get.offAll(const OnBoardingScreen());
     }

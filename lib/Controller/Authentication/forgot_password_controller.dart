@@ -15,7 +15,7 @@ class ForgetPasswordController extends GetxController {
             .sendPasswordResetEmail(email: email.text.trim());
         Get.snackbar('Notice', 'Password Reset');
       } on FirebaseAuthException catch (e) {
-        Get.snackbar('Warning', e.toString());
+        Get.snackbar('Warning', e.toString(),backgroundColor: Colors.black87,);
       }
     }
   }

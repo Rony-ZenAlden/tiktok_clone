@@ -7,7 +7,7 @@ class Comment {
   String? userID;
   String? commentID;
   final publishedDateTime;
-  List? likeListComment;
+  List? commentLikeList;
 
   Comment({
     this.userName,
@@ -16,7 +16,7 @@ class Comment {
     this.userID,
     this.commentID,
     this.publishedDateTime,
-    this.likeListComment,
+    this.commentLikeList,
 });
 
   Map<String, dynamic> toJson()=> {
@@ -26,7 +26,7 @@ class Comment {
     'userID': userID,
     'commentID': commentID,
     'publishedDateTime': publishedDateTime,
-    'likeListComment': likeListComment,
+    'commentLikeList': commentLikeList,
   };
 
   static Comment fromDocumentSnapshot(DocumentSnapshot snapshot) {
@@ -38,7 +38,7 @@ class Comment {
       userID: documentSnapshot['userID'],
       commentID: documentSnapshot['commentID'],
       publishedDateTime: documentSnapshot['publishedDateTime'],
-      likeListComment: documentSnapshot['likeListComment'],
+      commentLikeList: documentSnapshot['commentLikeList'],
     );
   }
 }

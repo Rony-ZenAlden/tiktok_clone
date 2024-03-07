@@ -204,7 +204,7 @@ class _ForYouScreenState extends State<ForYouScreen> {
 
                                   // Total Comments
                                   Text(
-                                    eachVideoInfo.totalComments!.toString(),
+                                    eachVideoInfo.totalComments.toString(),
                                     style: const TextStyle(
                                       fontSize: 20,
                                       color: Colors.white,

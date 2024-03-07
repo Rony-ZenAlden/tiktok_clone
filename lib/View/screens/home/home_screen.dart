@@ -6,6 +6,7 @@ import 'package:tiktok_clone/View/screens/home/profile/profile_screen.dart';
 import 'package:tiktok_clone/View/screens/home/search/search_screen.dart';
 import 'package:tiktok_clone/View/widgets/upload_custom_icon.dart';
 import 'package:tiktok_clone/View/screens/home/upload_vedio/upload_video_screen.dart';
+import '../../../global.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,13 +17,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int screenIndex = 0;
-  List screensList = const [
-    ForYouScreen(),
-    SearchScreen(),
-    UploadVideoScreen(),
-    FollowingVideoScreen(),
-    ProfileScreen(),
+  List screensList = [
+    const ForYouScreen(),
+    const SearchScreen(),
+    const UploadVideoScreen(),
+    const FollowingVideoScreen(),
+    ProfileScreen(
+      visitUserID: currentUserID,
+    ),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

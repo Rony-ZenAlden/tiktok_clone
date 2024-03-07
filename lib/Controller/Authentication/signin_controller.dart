@@ -62,6 +62,7 @@ class SignInController extends GetxController {
       Get.snackbar(
         'Success',
         'Account has been created',
+        backgroundColor: Colors.black87,
       );
       Get.offAll(() => const LoginScreen());
       isLoading.value = false;
