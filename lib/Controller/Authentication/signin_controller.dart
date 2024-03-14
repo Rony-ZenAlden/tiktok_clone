@@ -29,8 +29,8 @@ class SignInController extends GetxController {
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
         Get.snackbar(
-          'Warning',
-          'No Internet Connection',
+          'warning'.tr,
+          'no Internet Connection'.tr,
           backgroundColor: Colors.red,
         );
         isLoading.value = false;
@@ -40,8 +40,8 @@ class SignInController extends GetxController {
       // Form Validation
       if (!signInFormKey.currentState!.validate()) {
         Get.snackbar(
-          'Form',
-          'Form field is not valid',
+          'form'.tr,
+          'form field is not valid'.tr,
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Get.isDarkMode ? Colors.white : Colors.black,
@@ -60,8 +60,8 @@ class SignInController extends GetxController {
       _authController.createAccountForUser(
           userName.text, email.text, password.text, imageBytes.value);
       Get.snackbar(
-        'Success',
-        'Account has been created',
+        'success'.tr,
+        'Account has been created'.tr,
         backgroundColor: Colors.black87,
       );
       Get.offAll(() => const LoginScreen());

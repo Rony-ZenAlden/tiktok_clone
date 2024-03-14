@@ -230,13 +230,13 @@ class _ForYouScreenState extends State<ForYouScreen> {
                                   ),
 
                                   // Total Shares
-                                  Text(
-                                    eachVideoInfo.totalShares!.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                  // Text(
+                                  //   eachVideoInfo.totalShares!.toString(),
+                                  //   style: const TextStyle(
+                                  //     fontSize: 20,
+                                  //     color: Colors.white,
+                                  //   ),
+                                  // ),
                                 ],
                               ),
 

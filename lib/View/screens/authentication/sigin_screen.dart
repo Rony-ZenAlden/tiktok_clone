@@ -32,12 +32,12 @@ class _SignInScreenState extends State<SignInScreen> {
                   children: [
                     const SizedBox(height: 60),
                     // Text
-                    const Column(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Create Account',
-                          style: TextStyle(
+                          'create account'.tr,
+                          style: const TextStyle(
                             fontSize: 34,
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -45,8 +45,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ),
                         Text(
-                          'to get Started Now!',
-                          style: TextStyle(
+                          'to get started now'.tr,
+                          style: const TextStyle(
                             fontSize: 34,
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -187,7 +187,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       controller: controller.userName,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        hintText: 'UserName...',
+                        hintText: 'enterFullName'.tr,
                         prefixIcon: const Icon(Icons.person),
                         border: OutlineInputBorder(
                             borderSide: Divider.createBorderSide(context)),
@@ -206,7 +206,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       controller: controller.email,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                        hintText: 'Email...',
+                        hintText: 'enterEmail'.tr,
                         prefixIcon: const Icon(Icons.email_outlined),
                         border: OutlineInputBorder(
                             borderSide: Divider.createBorderSide(context)),
@@ -228,7 +228,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         keyboardType: TextInputType.text,
                         obscureText: controller.hidePassword.value,
                         decoration: InputDecoration(
-                          hintText: 'Password...',
+                          hintText: 'enterPassword'.tr,
                           prefixIcon: const Icon(Icons.lock_outline),
                           suffixIcon: IconButton(
                               onPressed: () {
@@ -272,9 +272,9 @@ class _SignInScreenState extends State<SignInScreen> {
                               ? const CircularProgressIndicator(
                                   color: Colors.black,
                                 )
-                              : const Text(
-                                  'Sign in',
-                                  style: TextStyle(
+                              : Text(
+                                  'Sign in'.tr,
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
@@ -288,17 +288,18 @@ class _SignInScreenState extends State<SignInScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Don\'t have an account?',
-                          style: TextStyle(color: Colors.grey, fontSize: 19),
+                        Text(
+                          'Already have an'.tr,
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 19),
                         ),
                         InkWell(
                           onTap: () {
                             Get.offAll(const LoginScreen());
                           },
-                          child: const Text(
-                            ' Login Now',
-                            style: TextStyle(
+                          child: Text(
+                            'login'.tr,
+                            style: const TextStyle(
                               fontSize: 19,
                               fontWeight: FontWeight.bold,
                             ),

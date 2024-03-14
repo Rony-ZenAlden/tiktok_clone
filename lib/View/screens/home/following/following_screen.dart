@@ -1,0 +1,160 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:tiktok_clone/Controller/home/profile_controller.dart';
+
+import '../profile/profile_screen.dart';
+
+class FollowingScreen extends StatefulWidget {
+  FollowingScreen({
+    super.key,
+    required this.visitedProfileUserID,
+  });
+
+  String visitedProfileUserID;
+
+  @override
+  State<FollowingScreen> createState() => _FollowingScreenState();
+}
+
+class _FollowingScreenState extends State<FollowingScreen> {
+  List<String> followingKeysList = [];
+  List followingUsersDataList = [];
+  ProfileController controller = Get.put(ProfileController());
+
+  getFollowingListKeys() async {
+    var followingDocument = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(widget.visitedProfileUserID)
+        .collection('following')
+        .get();
+
+    for (int i = 0; i < followingDocument.docs.length; i++) {
+      followingKeysList.add(followingDocument.docs[i].id);
+    }
+    getFollowingKeysDataFromUser(followingKeysList);
+  }
+
+  getFollowingKeysDataFromUser(List<String> listOfFollowingKeys) async {
+    var allUsersDocument =
+        await FirebaseFirestore.instance.collection('Users').get();
+
+    for (int i = 0; i < allUsersDocument.docs.length; i++) {
+      for (int j = 0; j < listOfFollowingKeys.length; j++) {
+        if (((allUsersDocument.docs[i].data() as dynamic)['uid']) ==
+            listOfFollowingKeys[j]) {
+          followingUsersDataList
+              .add((allUsersDocument.docs[i].data()));
+        }
+      }
+    }
+
+    setState(() {
+      followingUsersDataList;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getFollowingListKeys();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: Column(
+          children: [
+            Text(
+              controller.userMap['userName'],
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 25,
+              ),
+            ),
+            const SizedBox(
+              height: 3,
+            ),
+            Text(
+              'Following ' + controller.userMap['totalFollowings'],
+              style: const TextStyle(
+                color: Colors.white54,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
+      ),
+      body: followingUsersDataList.isEmpty
+          ? Center(
+              child: Icon(
+                Icons.person_off_sharp,
+                color: Colors.white,
+                size: 60,
+              ),
+            )
+          : ListView.builder(
+              itemCount: followingUsersDataList.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 4,
+                  ),
+                  child: Card(
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(
+                          ProfileScreen(
+                            visitUserID: followingUsersDataList[index]['uid'],
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            followingUsersDataList[index]['image'].toString(),
+                          ),
+                        ),
+                        title: Text(
+                          followingUsersDataList[index]['name'].toString(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                        subtitle: Text(
+                          followingUsersDataList[index]['email'].toString(),
+                          style: const TextStyle(
+                            color: Colors.white70,
+                          ),
+                        ),
+                        trailing: IconButton(
+                          onPressed: () {
+                            Get.to(
+                              ProfileScreen(
+                                visitUserID: followingUsersDataList[index]
+                                    ['uid'],
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.navigate_next_outlined,
+                            size: 24,
+                            color: Colors.redAccent,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}

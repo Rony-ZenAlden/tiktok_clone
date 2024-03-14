@@ -2,36 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:tiktok_clone/Controller/home/following_videos_controller.dart';
-
+import '../../../../Controller/home/video_profile_controller.dart';
 import '../../../widgets/circular_image_animation.dart';
 import '../../../widgets/like_animation.dart';
 import '../../../widgets/video_player.dart';
 import '../for_you/comments/comments_screen.dart';
 
-class FollowingVideoScreen extends StatefulWidget {
-  const FollowingVideoScreen({super.key});
+class VideoPlayerProfile extends StatefulWidget {
+  VideoPlayerProfile({
+    super.key,
+    required this.clickedVideoID,
+  });
+
+  String clickedVideoID;
 
   @override
-  State<FollowingVideoScreen> createState() => _FollowingVideoScreenState();
+  State<VideoPlayerProfile> createState() => _VideoPlayerProfileState();
 }
 
-class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
+class _VideoPlayerProfileState extends State<VideoPlayerProfile> {
+  final controller = Get.put(VideoProfileController());
+
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(FollowingVideosController());
+    controller.setVideoID(widget.clickedVideoID.toString());
     return Scaffold(body: Obx(() {
       return PageView.builder(
-        itemCount: controller.followingAllVideoList.length,
+        itemCount: controller.clickedVideoFile.length,
         controller: PageController(initialPage: 0, viewportFraction: 1),
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index) {
-          final eachVideoInfo = controller.followingAllVideoList[index];
+          final clickedVideoInfo = controller.clickedVideoFile[index];
           return Stack(
             children: [
               // Display Video
               VideoPlayerWidget(
-                videoFileUrl: eachVideoInfo.videoUrl.toString(),
+                videoFileUrl: clickedVideoInfo.videoUrl.toString(),
               ),
 
               Column(
@@ -58,7 +64,7 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
                               children: [
                                 // UserName
                                 Text(
-                                  '@${eachVideoInfo.userName}',
+                                  '@${clickedVideoInfo.userName}',
                                   style: GoogleFonts.abel(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -73,7 +79,7 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
 
                                 // Descriptions + Tags
                                 Text(
-                                  '${eachVideoInfo.descriptionTags}',
+                                  '${clickedVideoInfo.descriptionTags}',
                                   style: GoogleFonts.abel(
                                     fontSize: 18,
                                     color: Colors.white,
@@ -95,7 +101,7 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
                                     ),
                                     Expanded(
                                       child: Text(
-                                        '   ${eachVideoInfo.artistSongName}',
+                                        '   ${clickedVideoInfo.artistSongName}',
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.alexBrush(
                                           fontSize: 16,
@@ -133,14 +139,14 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
-                                          BorderRadius.circular(25),
+                                              BorderRadius.circular(25),
                                         ),
                                         child: ClipRRect(
                                           borderRadius:
-                                          BorderRadius.circular(25),
+                                              BorderRadius.circular(25),
                                           child: Image(
                                             image: NetworkImage(
-                                              eachVideoInfo.userProfileImage
+                                              clickedVideoInfo.userProfileImage
                                                   .toString(),
                                             ),
                                           ),
@@ -158,7 +164,7 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
                                   IconButton(
                                     onPressed: () {
                                       controller.likeOrUnLikeVideo(
-                                        eachVideoInfo.videoID.toString(),
+                                        clickedVideoInfo.videoID.toString(),
                                       );
                                       setState(() {
                                         controller.isLikeAnimating.value = true;
@@ -167,8 +173,8 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
                                     icon: Icon(
                                       Icons.favorite_rounded,
                                       size: 40,
-                                      color: eachVideoInfo.likesList!.contains(
-                                          controller.auth.currentUser!.uid)
+                                      color: clickedVideoInfo.likesList!.contains(
+                                              controller.auth.currentUser!.uid)
                                           ? Colors.red
                                           : Colors.white,
                                     ),
@@ -176,7 +182,7 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
 
                                   // Total Likes
                                   Text(
-                                    eachVideoInfo.likesList!.length.toString(),
+                                    clickedVideoInfo.likesList!.length.toString(),
                                     style: const TextStyle(
                                       fontSize: 20,
                                       color: Colors.white,
@@ -193,7 +199,7 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
                                     onPressed: () {
                                       Get.to(CommentsScreen(
                                         videoID:
-                                        eachVideoInfo.videoID.toString(),
+                                            clickedVideoInfo.videoID.toString(),
                                       ));
                                     },
                                     icon: const Icon(
@@ -205,7 +211,7 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
 
                                   // Total Comments
                                   Text(
-                                    eachVideoInfo.totalComments.toString(),
+                                    clickedVideoInfo.totalComments.toString(),
                                     style: const TextStyle(
                                       fontSize: 20,
                                       color: Colors.white,
@@ -221,7 +227,7 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
                                   IconButton(
                                     onPressed: () {
                                       Share.share(
-                                          eachVideoInfo.videoUrl!.toString());
+                                          clickedVideoInfo.videoUrl!.toString());
                                     },
                                     icon: const Icon(
                                       Icons.share,
@@ -231,13 +237,13 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
                                   ),
 
                                   // Total Shares
-                                  // Text(
-                                  //   eachVideoInfo.totalShares!.toString(),
-                                  //   style: const TextStyle(
-                                  //     fontSize: 20,
-                                  //     color: Colors.white,
-                                  //   ),
-                                  // ),
+                                  Text(
+                                    clickedVideoInfo.totalShares!.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ],
                               ),
 
@@ -260,14 +266,14 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
                                             ],
                                           ),
                                           borderRadius:
-                                          BorderRadius.circular(25),
+                                              BorderRadius.circular(25),
                                         ),
                                         child: ClipRRect(
                                           borderRadius:
-                                          BorderRadius.circular(25),
+                                              BorderRadius.circular(25),
                                           child: Image(
                                             image: NetworkImage(
-                                              eachVideoInfo.userProfileImage
+                                              clickedVideoInfo.userProfileImage
                                                   .toString(),
                                             ),
                                             fit: BoxFit.cover,

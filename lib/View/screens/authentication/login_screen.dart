@@ -7,6 +7,7 @@ import 'package:tiktok_clone/View/screens/authentication/forgot_password_screen.
 import 'package:tiktok_clone/View/screens/authentication/sigin_screen.dart';
 import '../../../Controller/theme/theme_controller.dart';
 import '../../../constant/validator.dart';
+import '../../../locale/locale_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,9 +22,41 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(LoginController());
+    MyLocaleController controllerLang = Get.find();
     return Scaffold(
       appBar: AppBar(
         actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          controllerLang.changeLang('ar');
+                          Navigator.pop(context);
+                        },
+                        child: Text('1'.tr),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          controllerLang.changeLang('en');
+                          Navigator.pop(context);
+                        },
+                        child: Text('2'.tr),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.message_outlined,
+            ),
+          ),
           IconButton(
             onPressed: () {
               ThemeController().changeTheme();
@@ -33,11 +66,11 @@ class _LoginScreenState extends State<LoginScreen> {
             },
             icon: Get.isDarkMode
                 ? const Icon(
-              CupertinoIcons.sun_max_fill,
-            )
+                    CupertinoIcons.sun_max_fill,
+                  )
                 : const Icon(
-              CupertinoIcons.moon_stars_fill,
-            ),
+                    CupertinoIcons.moon_stars_fill,
+                  ),
           ),
         ],
       ),
@@ -60,12 +93,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Get.isDarkMode ? Colors.white : Colors.black,
                     ),
                     // Text
-                    const Column(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Welcome',
-                          style: TextStyle(
+                          'welcome'.tr,
+                          style: const TextStyle(
                             fontSize: 34,
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -73,8 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         Text(
-                          'Glad to see you!',
-                          style: TextStyle(
+                          'glad to see you!'.tr,
+                          style: const TextStyle(
                             fontSize: 34,
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -90,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: controller.email,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                        hintText: 'Email...',
+                        hintText: 'enterEmail'.tr,
                         prefixIcon: const Icon(Icons.email_outlined),
                         border: OutlineInputBorder(
                             borderSide: Divider.createBorderSide(context)),
@@ -112,13 +145,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.text,
                         obscureText: controller.hidePassword.value,
                         decoration: InputDecoration(
-                          hintText: 'Password...',
+                          hintText: 'enterPassword'.tr,
                           prefixIcon: const Icon(Icons.lock_outline),
                           suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
                                   controller.hidePassword.value =
-                                  !controller.hidePassword.value;
+                                      !controller.hidePassword.value;
                                 });
                               },
                               icon: controller.hidePassword.value
@@ -143,18 +176,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         Row(
                           children: [
                             Obx(
-                                  () =>
-                                  Checkbox(
-                                    value: controller.rememberMe.value,
-                                    onChanged: (value) {
-                                      controller.rememberMe.value =
+                              () => Checkbox(
+                                value: controller.rememberMe.value,
+                                onChanged: (value) {
+                                  controller.rememberMe.value =
                                       !controller.rememberMe.value;
-                                    },
-                                  ),
+                                },
+                              ),
                             ),
-                            const Text(
-                              'Remember Me',
-                              style: TextStyle(
+                            Text(
+                              'remember me'.tr,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -164,12 +196,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextButton(
                             onPressed: () {
                               Get.to(
-                                    () => const ForgotPasswordScreen(),
+                                () => const ForgotPasswordScreen(),
                               );
                             },
-                            child: const Text(
-                              'Forgot Password',
-                              style: TextStyle(
+                            child: Text(
+                              'forgotPassword'.tr,
+                              style: const TextStyle(
                                 fontStyle: FontStyle.italic,
                                 decoration: TextDecoration.underline,
                                 fontWeight: FontWeight.w500,
@@ -187,8 +219,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Obx(() {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                              Get.isDarkMode ? Colors.white : Colors.white24,
+                              backgroundColor: Get.isDarkMode
+                                  ? Colors.white
+                                  : Colors.white24,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               )),
@@ -197,16 +230,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           child: controller.isLoading.value
                               ? const CircularProgressIndicator(
-                            color: Colors.black,
-                          )
-                              : const Text(
-                            'Login',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                                  color: Colors.black,
+                                )
+                              : Text(
+                                  'login'.tr,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         );
                       }),
                     ),
@@ -214,65 +247,62 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 50,
                       width: double.infinity,
-                      child: SignInButton(
-                        Buttons.googleDark,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        onPressed: () async {
-                          await controller.sigInGoogle();
-                        },
-                      ),
+                      child: Obx(() {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Get.isDarkMode
+                                  ? Colors.white
+                                  : Colors.white24,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                          onPressed: () async {
+                            await controller.sigInGoogle();
+                          },
+                          child: controller.isLoading.value
+                              ? const CircularProgressIndicator(
+                                  color: Colors.black,
+                                )
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      'sign in with google'.tr,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Image.asset(
+                                      'assets/images/google.png',
+                                      height: 40,
+                                      width: 40,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ],
+                                ),
+                        );
+                      }),
                     ),
-                    // const SizedBox(height: 10),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     SizedBox(
-                    //       height: 50,
-                    //       width: 170,
-                    //       child: SignInButton(
-                    //         Buttons.gitHub,
-                    //         shape: RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.circular(10),
-                    //         ),
-                    //         onPressed: () async{
-                    //           await controller.sigInGoogle();
-                    //         },
-                    //       ),
-                    //     ),
-                    //     // const SizedBox(width: 10),
-                    //     SizedBox(
-                    //       height: 50,
-                    //       width: 180,
-                    //       child: SignInButton(
-                    //         Buttons.linkedIn,
-                    //         shape: RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.circular(10),
-                    //         ),
-                    //         onPressed: () async{
-                    //           await controller.sigInFacebook();
-                    //         },
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                     const SizedBox(height: 15),
                     // Sign in screen
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Already have an account?',
-                          style: TextStyle(color: Colors.grey, fontSize: 19),
+                        Text(
+                          'do not have'.tr,
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 19),
                         ),
                         InkWell(
                           onTap: () {
                             Get.offAll(const SignInScreen());
                           },
-                          child: const Text(
-                            ' Sign Up Now',
-                            style: TextStyle(
+                          child: Text(
+                            'Sign in'.tr,
+                            style: const TextStyle(
                               fontSize: 19,
                               fontWeight: FontWeight.bold,
                             ),

@@ -1,10 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:tiktok_clone/Controller/home/profile_controller.dart';
+import 'package:tiktok_clone/View/screens/home/following/followers_screen.dart';
+import 'package:tiktok_clone/View/screens/home/following/following_screen.dart';
 import 'package:tiktok_clone/View/screens/home/profile/settings/settings_screen.dart';
+import 'package:tiktok_clone/View/screens/home/profile/video_player_profile.dart';
 import 'package:tiktok_clone/global.dart';
+import '../../../../Controller/theme/theme_controller.dart';
+import '../../../../locale/locale_controller.dart';
 import '../../../widgets/loading_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -21,6 +27,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   ProfileController controller = Get.put(ProfileController());
+  MyLocaleController controllerLang = Get.find();
   bool isFollowingUser = false;
   final _fireStore = FirebaseFirestore.instance;
 
@@ -29,7 +36,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO: implement initState
     super.initState();
     controller.updateCurrentUserID(widget.visitUserID.toString());
-    // controller.updateCurrentUserID(FirebaseAuth.instance.currentUser!.uid);
   }
 
   getIsFollowingValue() {
@@ -38,13 +44,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .doc(widget.visitUserID.toString())
         .collection('followers')
         .doc(currentUserID)
-        .get().then((value) {
-      if(value.exists) {
+        .get()
+        .then((value) {
+      if (value.exists) {
         setState(() {
           isFollowingUser = true;
         });
-      }
-      else {
+      } else {
         setState(() {
           isFollowingUser = false;
         });
@@ -55,11 +61,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
   handleClickEvent(String choiceClicked) async {
     switch (choiceClicked) {
       case 'Settings':
-        Get.to(const SettingsScreen());
+        Get.to(
+          () => const SettingsScreen(),
+        );
         break;
-      case 'Logout':
-        controller.signOut();
+      case 'Translation':
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    controllerLang.changeLang('ar');
+                    Navigator.pop(context);
+                  },
+                  child: Text('1'.tr),
+                ),
+                TextButton(
+                  onPressed: () {
+                    controllerLang.changeLang('en');
+                    Navigator.pop(context);
+                  },
+                  child: Text('2'.tr),
+                ),
+              ],
+            ),
+          ),
+        );
         break;
+      case 'Theme':
+        ThemeController().changeTheme();
+        break;
+    }
+  }
+
+  readClickedThumbnailInfo(String clickedThumbnailUrl) async {
+    var allVideosDocs =
+        await FirebaseFirestore.instance.collection('videos').get();
+
+    for (int i = 0; i < allVideosDocs.docs.length; i++) {
+      if (((allVideosDocs.docs[i].data() as dynamic)['thumbnailUrl']) ==
+          clickedThumbnailUrl) {
+        Get.to(
+          () => VideoPlayerProfile(
+            clickedVideoID:
+                (allVideosDocs.docs[i].data() as dynamic)['videoID'],
+          ),
+        );
+      }
     }
   }
 
@@ -76,13 +127,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             leading: widget.visitUserID.toString() == currentUserID
                 ? Container()
                 : IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: const Icon(
-                Icons.arrow_back,
-              ),
-            ),
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back,
+                    ),
+                  ),
             title: Text(
               controllerProfile.userMap['userName'],
               style: const TextStyle(
@@ -93,19 +144,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
             actions: [
               widget.visitUserID.toString() == currentUserID
                   ? PopupMenuButton<String>(
-                onSelected: handleClickEvent,
-                itemBuilder: (BuildContext context) {
-                  return {
-                    'Settings',
-                    'Logout',
-                  }.map((String choiceClicked) {
-                    return PopupMenuItem(
-                      value: choiceClicked,
-                      child: Text(choiceClicked),
-                    );
-                  }).toList();
-                },
-              )
+                      onSelected: handleClickEvent,
+                      itemBuilder: (BuildContext context) {
+                        return {
+                          'Settings',
+                          'Translation',
+                          'Theme',
+                        }.map((String choiceClicked) {
+                          return PopupMenuItem(
+                            value: choiceClicked,
+                            child: Text(choiceClicked),
+                          );
+                        }).toList();
+                      },
+                    )
                   : Container(),
             ],
           ),
@@ -132,7 +184,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       // Following
                       GestureDetector(
-                        onTap: () {},
+                        onTap: widget.visitUserID.toString() == currentUserID
+                            ? () {
+                                Get.to(
+                                  () => FollowingScreen(
+                                    visitedProfileUserID:
+                                        widget.visitUserID.toString(),
+                                  ),
+                                );
+                              }
+                            : () {},
                         child: Column(
                           children: [
                             Text(
@@ -145,9 +206,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             const SizedBox(
                               height: 6,
                             ),
-                            const Text(
-                              'Followings',
-                              style: TextStyle(
+                            Text(
+                              'following'.tr,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 18,
                               ),
@@ -160,11 +221,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Container(
                         color: Colors.black54,
                         width: 1,
-                        height: 25,
+                        height: 35,
                         margin: const EdgeInsets.symmetric(horizontal: 15),
                       ),
 
-                      // Followers
+                      // Likes
                       GestureDetector(
                         onTap: () {},
                         child: Column(
@@ -179,9 +240,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             const SizedBox(
                               height: 6,
                             ),
-                            const Text(
-                              'Likes',
-                              style: TextStyle(
+                            Text(
+                              'likes'.tr,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 18,
                               ),
@@ -194,13 +255,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Container(
                         color: Colors.black54,
                         width: 1,
-                        height: 25,
+                        height: 35,
                         margin: const EdgeInsets.symmetric(horizontal: 15),
                       ),
 
                       // Followers
                       GestureDetector(
-                        onTap: () {},
+                        onTap: widget.visitUserID.toString() == currentUserID
+                            ? () {
+                                Get.to(
+                                  () => FollowersScreen(
+                                    visitedProfileUserID:
+                                        widget.visitUserID.toString(),
+                                  ),
+                                );
+                              }
+                            : () {},
                         child: Column(
                           children: [
                             Text(
@@ -213,9 +283,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             const SizedBox(
                               height: 6,
                             ),
-                            const Text(
-                              'Followers',
-                              style: TextStyle(
+                            Text(
+                              'followers'.tr,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 18,
                               ),
@@ -338,6 +408,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           'You Are Logged Out From The App.',
                           backgroundColor: Colors.black87,
                         );
+                        Future.delayed(const Duration(milliseconds: 1000), () {
+                          SystemChannels.platform
+                              .invokeMethod("SystemNavigator.pop");
+                        });
                       }
                       // User view someone's else profile.
                       // Follow btn - UnFollow btn.
@@ -356,35 +430,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             isFollowingUser = true;
                           });
                         }
+                        controller.followUnFollowUser();
                       }
-                      controller.followUnFollowUser();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       padding: const EdgeInsets.symmetric(horizontal: 90),
                       shape: widget.visitUserID.toString() == currentUserID
                           ? RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        side: const BorderSide(color: Colors.red),
-                      ) : isFollowingUser == true ? RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        side: const BorderSide(color: Colors.red),
-                      ) :  RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        side: const BorderSide(color: Colors.green),
-                      ),
+                              borderRadius: BorderRadius.circular(18),
+                              side: const BorderSide(color: Colors.red),
+                            )
+                          : isFollowingUser == true
+                              ? RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                  side: const BorderSide(color: Colors.red),
+                                )
+                              : RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                  side: const BorderSide(color: Colors.green),
+                                ),
                     ),
                     child: Text(
                       widget.visitUserID.toString() == currentUserID
-                          ? 'Sign Out'
+                          ? 'signOut'.tr
                           : isFollowingUser == true
-                          ? 'UnFollow'
-                          : 'Follow',
+                              ? 'unFollow'.tr
+                              : 'follow'.tr,
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                  ),
+
+                  // Spaces
+                  const SizedBox(
+                    height: 8,
+                  ),
+
+                  // User's Videos - Thumbnails
+                  GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount:
+                        controllerProfile.userMap['thumbnailsList'].length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 0.7,
+                      crossAxisSpacing: 2,
+                    ),
+                    itemBuilder: (context, index) {
+                      String eachThumbnailUrl =
+                          controllerProfile.userMap['thumbnailsList'][index];
+                      return GestureDetector(
+                        onTap: () {
+                          readClickedThumbnailInfo(eachThumbnailUrl);
+                        },
+                        child: Image.network(
+                          eachThumbnailUrl,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

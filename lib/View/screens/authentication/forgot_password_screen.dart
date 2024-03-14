@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiktok_clone/Controller/Authentication/forgot_password_controller.dart';
@@ -28,9 +27,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          'Forgot Password',
-          style: TextStyle(
+        title: Text(
+          'forgotPassword'.tr,
+          style: const TextStyle(
             fontSize: 28,
           ),
         ),
@@ -57,13 +56,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               const SizedBox(
                 height: 10,
               ),
-              const TitlesTextWidget(
-                label: 'Forgot password',
+              TitlesTextWidget(
+                label: 'forgotPassword'.tr,
                 fontSize: 22,
               ),
-              const SubtitleTextWidget(
+              SubtitleTextWidget(
                 label:
-                    'Please enter the email address you\'d like your password reset information sent to',
+                'pleaseEnter'.tr,
                 fontSize: 14,
               ),
               const SizedBox(
@@ -79,7 +78,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                        hintText: 'youremail@email.com',
+                        hintText: 'enterEmail'.tr,
                         prefixIcon: Container(
                           padding: const EdgeInsets.all(12),
                           child: const Icon(Icons.email),
@@ -116,9 +115,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                   ),
                   icon: const Icon(Icons.send),
-                  label: const Text(
-                    "Request link",
-                    style: TextStyle(
+                  label: Text(
+                    'resetPassword'.tr,
+                    style: const TextStyle(
                       fontSize: 20,
                     ),
                   ),

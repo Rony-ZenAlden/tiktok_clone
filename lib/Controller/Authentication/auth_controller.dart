@@ -109,6 +109,10 @@ class AuthController extends GetxController {
         password: password,
         image: imageDownloadUrl,
         uid: credential.user!.uid,
+        facebook: '',
+        youtube: '',
+        instagram: '',
+        twitter: '',
       );
       await _fireStore
           .collection('Users')

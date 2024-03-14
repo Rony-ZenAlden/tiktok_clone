@@ -29,7 +29,7 @@ class User {
         'uid': uid,
         'image': image,
         'email': email,
-    'password': password,
+        'password': password,
         'youtube': youtube,
         'facebook': facebook,
         'twitter': twitter,
@@ -49,8 +49,8 @@ class User {
     instagram = json['instagram'];
   }
 
-  static User fromSnap(DocumentSnapshot snapshot){
-    var dataSnapshot = snapshot.data() as Map<String,dynamic>;
+  static User fromSnap(DocumentSnapshot snapshot) {
+    var dataSnapshot = snapshot.data() as Map<String, dynamic>;
 
     return User(
       name: dataSnapshot['name'],

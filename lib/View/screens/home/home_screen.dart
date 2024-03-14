@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tiktok_clone/View/screens/home/following/following_vedio_screen.dart';
 import 'package:tiktok_clone/View/screens/home/for_you/for_you_screen.dart';
 import 'package:tiktok_clone/View/screens/home/profile/profile_screen.dart';
@@ -60,38 +61,38 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white12,
         currentIndex: screenIndex,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.home,
               size: 30,
             ),
-            label: 'Home',
+            label: 'home'.tr,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.search,
               size: 30,
             ),
-            label: 'Search',
+            label: 'search'.tr,
           ),
           BottomNavigationBarItem(
-            icon: UploadIcon(),
+            icon: const UploadIcon(),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.inbox_sharp,
               size: 30,
             ),
-            label: 'Following',
+            label: 'following'.tr,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.person,
               size: 30,
             ),
-            label: 'Me',
+            label: 'me'.tr,
           ),
         ],
       ),

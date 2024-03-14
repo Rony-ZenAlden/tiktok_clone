@@ -37,8 +37,8 @@ class LoginController extends GetxController {
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
         Get.snackbar(
-          'Warning',
-          'No Internet Connection',
+          'warning'.tr,
+          'no Internet Connection'.tr,
           backgroundColor: Colors.red,
         );
         isLoading.value = false;
@@ -48,8 +48,8 @@ class LoginController extends GetxController {
       // Form Validation
       if (!loginFormKey.currentState!.validate()) {
         Get.snackbar(
-          'Form',
-          'Form field is not valid',
+          'form'.tr,
+          'form field is not valid'.tr,
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.red,
           colorText: Get.isDarkMode ? Colors.white : Colors.black,
@@ -73,8 +73,8 @@ class LoginController extends GetxController {
       _authController.loginForUser(email.text, password.text);
       await Future.delayed(const Duration(seconds: 2));
       Get.snackbar(
-        'Success',
-        'Login Successfully',
+        'success'.tr,
+        'loginSuccess'.tr,
         backgroundColor: Colors.black87,
       );
       isLoading.value = false;

@@ -194,9 +194,9 @@ class CommentsScreen extends StatelessWidget {
                     title: TextFormField(
                       controller: controller.comment,
                       style: const TextStyle(fontSize: 16, color: Colors.white),
-                      decoration: const InputDecoration(
-                        labelText: 'New Comment...',
-                        labelStyle: TextStyle(
+                      decoration: InputDecoration(
+                        labelText: 'new Comment...'.tr,
+                        labelStyle: const TextStyle(
                           fontSize: 16,
                           color: Colors.grey,
                           fontWeight: FontWeight.w700,

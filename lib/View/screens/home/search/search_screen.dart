@@ -38,7 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 borderRadius: BorderRadius.circular(6.0),
               ),
-              hintText: 'Search here...',
+              hintText: 'searchs'.tr,
               hintStyle: const TextStyle(
                 fontSize: 18,
                 color: Colors.grey,
@@ -100,7 +100,13 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           ),
                           trailing: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.to(
+                                ProfileScreen(
+                                  visitUserID : eachUserRecord.uid.toString(),
+                                ),
+                              );
+                            },
                             icon: const Icon(
                               Icons.navigate_next_outlined,
                               size: 24,

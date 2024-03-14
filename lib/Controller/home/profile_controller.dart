@@ -1,7 +1,10 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tiktok_clone/View/screens/home/home_screen.dart';
 import 'package:tiktok_clone/global.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,6 +22,7 @@ class ProfileController extends GetxController {
   }
 
   retrieveUserInformation() async {
+    // Get user Info
     DocumentSnapshot userDocumentSnapshot =
         await _fireStore.collection('Users').doc(_userID.value).get();
     final userInfo = userDocumentSnapshot.data() as dynamic;
@@ -36,6 +40,23 @@ class ProfileController extends GetxController {
     int totalFollowings = 0;
     bool isFollowing = false;
     List<String> thumbnailsList = [];
+
+    // Get user's videos info
+    var currentUserVideos = await _fireStore
+        .collection('videos')
+        .orderBy('publishedDateTime', descending: true)
+        .where('userID', isEqualTo: _userID.value)
+        .get();
+
+    for (int i = 0; i < currentUserVideos.docs.length; i++) {
+      thumbnailsList
+          .add((currentUserVideos.docs[i].data() as dynamic)['thumbnailUrl']);
+    }
+
+    // Get total number of likes
+    for (var eachVideo in currentUserVideos.docs) {
+      totalLikes = totalLikes + (eachVideo.data()['likesList'] as List).length;
+    }
 
     // Get the total number of followers
     var followersNumDocument = await _fireStore
@@ -61,13 +82,13 @@ class ProfileController extends GetxController {
         .doc(_userID.value)
         .collection('followers')
         .doc(currentUserID)
-        .get().then((value) {
-          if(value.exists) {
-            isFollowing = true;
-          }
-          else {
-            isFollowing = false;
-          }
+        .get()
+        .then((value) {
+      if (value.exists) {
+        isFollowing = true;
+      } else {
+        isFollowing = false;
+      }
     });
 
     _userMap.value = {
@@ -132,7 +153,8 @@ class ProfileController extends GetxController {
           .delete();
 
       // Decrement - update totalFollowers number.
-      _userMap.value.update('totalFollowers', (value) => (int.parse(value) - 1).toString());
+      _userMap.value.update(
+          'totalFollowers', (value) => (int.parse(value) - 1).toString());
     }
     // If CurrentUser is Not already following other user
     else {
@@ -155,10 +177,33 @@ class ProfileController extends GetxController {
           .set({});
 
       // Increment - update totalFollowers number.
-      _userMap.value.update('totalFollowers', (value) => (int.parse(value) + 1).toString());
+      _userMap.value.update(
+          'totalFollowers', (value) => (int.parse(value) + 1).toString());
     }
 
     _userMap.value.update('isFollowing', (value) => !value);
     update();
+  }
+
+  updateUserAccount(String email,
+      String facebook, String instagram, String youtube, String twitter) async {
+    try {
+      final Map<String, dynamic> userSocialLinksMap = {
+        'email': email,
+        'facebook': facebook,
+        'instagram': instagram,
+        'youtube': youtube,
+        'twitter': twitter,
+      };
+
+      await _fireStore
+          .collection('Users')
+          .doc(currentUserID)
+          .update(userSocialLinksMap);
+      Get.snackbar('Update Account', 'your account are updated successfully.');
+      Get.to(HomeScreen());
+    } catch (e) {
+      Get.snackbar('Error Updating Account', 'Please Try Again.');
+    }
   }
 }
