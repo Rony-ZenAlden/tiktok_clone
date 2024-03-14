@@ -470,20 +470,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
 
                   // User's Videos - Thumbnails
-                  GridView.builder(
+                  widget.visitUserID.toString() == currentUserID
+                      ? GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount:
-                        controllerProfile.userMap['thumbnailsList'].length,
+                    controllerProfile.userMap['thumbnailsList'].length,
                     gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       childAspectRatio: 0.7,
                       crossAxisSpacing: 2,
                     ),
                     itemBuilder: (context, index) {
                       String eachThumbnailUrl =
-                          controllerProfile.userMap['thumbnailsList'][index];
+                      controllerProfile.userMap['thumbnailsList'][index];
                       return GestureDetector(
                         onTap: () {
                           readClickedThumbnailInfo(eachThumbnailUrl);
@@ -494,7 +495,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       );
                     },
-                  ),
+                  )
+                      : isFollowingUser == true
+                      ? GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount:
+                    controllerProfile.userMap['thumbnailsList'].length,
+                    gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 0.7,
+                      crossAxisSpacing: 2,
+                    ),
+                    itemBuilder: (context, index) {
+                      String eachThumbnailUrl =
+                      controllerProfile.userMap['thumbnailsList'][index];
+                      return GestureDetector(
+                        onTap: () {
+                          readClickedThumbnailInfo(eachThumbnailUrl);
+                        },
+                        child: Image.network(
+                          eachThumbnailUrl,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    },
+                  )
+                      : Container(),
                 ],
               ),
             ),

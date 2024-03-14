@@ -64,6 +64,9 @@ class MyLocale implements Translations {
           'account Settings': 'اعدادات الحساب',
           'update your profile:': 'تحديث الملف الشخصي:',
           'update Now': 'تحديث الاّن',
+          // Upload  Screen
+          'upload Video Screen': 'واجهة تحميل الفيديوهات',
+          'upload New Video': 'تحميل فيديو جديد',
         },
         'en': {
           // Language
@@ -125,6 +128,9 @@ class MyLocale implements Translations {
           'account Settings': 'Account Settings',
           'update your profile:': 'Update your profile:',
           'update Now': 'Update Now',
+          // Upload  Screen
+          'upload Video Screen': 'Upload Video Screen',
+          'upload New Video': 'Upload New Video',
         }
       };
 }

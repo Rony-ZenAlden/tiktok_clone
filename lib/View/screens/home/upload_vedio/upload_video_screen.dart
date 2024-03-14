@@ -18,8 +18,8 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
     if (videoFile != null) {
       Get.to(
         UploadForm(
-            videoFile: File(videoFile.path),
-            videoPath: videoFile.path,
+          videoFile: File(videoFile.path),
+          videoPath: videoFile.path,
         ),
       );
     }
@@ -107,7 +107,7 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Upload Video Screen'),
+        title: Text('upload Video Screen'.tr),
         centerTitle: true,
       ),
       body: Center(
@@ -126,9 +126,9 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
               onPressed: () {
                 displayDialogBox();
               },
-              child: const Text(
-                'Upload New Video',
-                style: TextStyle(
+              child: Text(
+                'upload New Video'.tr,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
