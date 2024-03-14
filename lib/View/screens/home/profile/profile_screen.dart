@@ -415,22 +415,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       }
                       // User view someone's else profile.
                       // Follow btn - UnFollow btn.
+                      //follow btn - unfollow btn
                       else {
-                        // IF following other user already.
-                        // UnFollow btn.
+                        //if currentUser is Already following other user
+                        //unfollow btn
                         if (isFollowingUser == true) {
                           setState(() {
                             isFollowingUser = false;
                           });
                         }
-                        // IF Not following other user.
-                        // Follow btn.
+                        //if currentUser is NOT Already following other user
+                        //follow btn
                         else {
                           setState(() {
                             isFollowingUser = true;
                           });
                         }
-                        controller.followUnFollowUser();
+
+                        controllerProfile.followUnFollowUser();
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -472,57 +474,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   // User's Videos - Thumbnails
                   widget.visitUserID.toString() == currentUserID
                       ? GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount:
-                    controllerProfile.userMap['thumbnailsList'].length,
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 0.7,
-                      crossAxisSpacing: 2,
-                    ),
-                    itemBuilder: (context, index) {
-                      String eachThumbnailUrl =
-                      controllerProfile.userMap['thumbnailsList'][index];
-                      return GestureDetector(
-                        onTap: () {
-                          readClickedThumbnailInfo(eachThumbnailUrl);
-                        },
-                        child: Image.network(
-                          eachThumbnailUrl,
-                          fit: BoxFit.cover,
-                        ),
-                      );
-                    },
-                  )
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: controllerProfile
+                              .userMap['thumbnailsList'].length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.7,
+                            crossAxisSpacing: 2,
+                          ),
+                          itemBuilder: (context, index) {
+                            String eachThumbnailUrl = controllerProfile
+                                .userMap['thumbnailsList'][index];
+                            return GestureDetector(
+                              onTap: () {
+                                readClickedThumbnailInfo(eachThumbnailUrl);
+                              },
+                              child: Image.network(
+                                eachThumbnailUrl,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          },
+                        )
                       : isFollowingUser == true
-                      ? GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount:
-                    controllerProfile.userMap['thumbnailsList'].length,
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 0.7,
-                      crossAxisSpacing: 2,
-                    ),
-                    itemBuilder: (context, index) {
-                      String eachThumbnailUrl =
-                      controllerProfile.userMap['thumbnailsList'][index];
-                      return GestureDetector(
-                        onTap: () {
-                          readClickedThumbnailInfo(eachThumbnailUrl);
-                        },
-                        child: Image.network(
-                          eachThumbnailUrl,
-                          fit: BoxFit.cover,
-                        ),
-                      );
-                    },
-                  )
-                      : Container(),
+                          ? GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: controllerProfile
+                                  .userMap['thumbnailsList'].length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                childAspectRatio: 0.7,
+                                crossAxisSpacing: 2,
+                              ),
+                              itemBuilder: (context, index) {
+                                String eachThumbnailUrl = controllerProfile
+                                    .userMap['thumbnailsList'][index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    readClickedThumbnailInfo(eachThumbnailUrl);
+                                  },
+                                  child: Image.network(
+                                    eachThumbnailUrl,
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(),
                 ],
               ),
             ),
