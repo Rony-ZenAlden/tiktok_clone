@@ -36,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO: implement initState
     super.initState();
     controller.updateCurrentUserID(widget.visitUserID.toString());
+    getIsFollowingValue();
   }
 
   getIsFollowingValue() {
@@ -415,17 +416,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       }
                       // User view someone's else profile.
                       // Follow btn - UnFollow btn.
-                      //follow btn - unfollow btn
+                      // follow btn - unfollow btn
                       else {
-                        //if currentUser is Already following other user
-                        //unfollow btn
+                        // if currentUser is Already following other user
+                        // unfollow btn
                         if (isFollowingUser == true) {
                           setState(() {
                             isFollowingUser = false;
                           });
                         }
-                        //if currentUser is NOT Already following other user
-                        //follow btn
+                        // if currentUser is NOT Already following other user
+                        // follow btn
                         else {
                           setState(() {
                             isFollowingUser = true;
