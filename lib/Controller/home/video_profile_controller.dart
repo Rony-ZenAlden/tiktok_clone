@@ -17,6 +17,13 @@ class VideoProfileController extends GetxController {
     _videoID.value = vID;
   }
 
+  deleteVideo(String videoID) async{
+      await _fireStore
+          .collection('videos')
+          .doc(videoID)
+          .delete();
+  }
+
   getClickedVideoInfo() async{
     videoFileList.bindStream(
       _fireStore

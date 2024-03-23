@@ -206,4 +206,5 @@ class ProfileController extends GetxController {
       Get.snackbar('Error Updating Account', 'Please Try Again.');
     }
   }
+
 }

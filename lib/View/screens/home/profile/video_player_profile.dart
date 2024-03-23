@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:tiktok_clone/View/screens/home/home_screen.dart';
+import 'package:tiktok_clone/View/screens/home/profile/profile_screen.dart';
 import '../../../../Controller/home/video_profile_controller.dart';
+import '../../../../global.dart';
 import '../../../widgets/circular_image_animation.dart';
 import '../../../widgets/like_animation.dart';
 import '../../../widgets/video_player.dart';
@@ -144,10 +147,86 @@ class _VideoPlayerProfileState extends State<VideoPlayerProfile> {
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(25),
-                                          child: Image(
-                                            image: NetworkImage(
-                                              clickedVideoInfo.userProfileImage
-                                                  .toString(),
+                                          child: InkWell(
+                                            onLongPress: () {
+                                              clickedVideoInfo.userID == currentUserID ?
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(16.0),
+                                                      ),
+                                                      backgroundColor: Theme.of(
+                                                              context)
+                                                          .scaffoldBackgroundColor,
+                                                      content: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              controller
+                                                                  .deleteVideo(
+                                                                clickedVideoInfo
+                                                                    .videoID
+                                                                    .toString(),
+                                                              );
+                                                              Get.to(
+                                                                () =>
+                                                                    HomeScreen(),
+                                                              );
+                                                            },
+                                                            child: const Row(
+                                                              children: [
+                                                                Icon(
+                                                                  Icons.delete,
+                                                                  color: Colors
+                                                                      .red,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 5,
+                                                                ),
+                                                                Text(
+                                                                    'Delete Video'),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Get.back();
+                                                            },
+                                                            child: const Row(
+                                                              children: [
+                                                                Icon(
+                                                                  Icons.cancel,
+                                                                  color: Colors
+                                                                      .green,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 5,
+                                                                ),
+                                                                Text('Cancel'),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }) : () {};
+                                            },
+                                            child: Image(
+                                              image: NetworkImage(
+                                                clickedVideoInfo
+                                                    .userProfileImage
+                                                    .toString(),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -173,8 +252,9 @@ class _VideoPlayerProfileState extends State<VideoPlayerProfile> {
                                     icon: Icon(
                                       Icons.favorite_rounded,
                                       size: 40,
-                                      color: clickedVideoInfo.likesList!.contains(
-                                              controller.auth.currentUser!.uid)
+                                      color: clickedVideoInfo.likesList!
+                                              .contains(controller
+                                                  .auth.currentUser!.uid)
                                           ? Colors.red
                                           : Colors.white,
                                     ),
@@ -182,7 +262,8 @@ class _VideoPlayerProfileState extends State<VideoPlayerProfile> {
 
                                   // Total Likes
                                   Text(
-                                    clickedVideoInfo.likesList!.length.toString(),
+                                    clickedVideoInfo.likesList!.length
+                                        .toString(),
                                     style: const TextStyle(
                                       fontSize: 20,
                                       color: Colors.white,
@@ -226,8 +307,8 @@ class _VideoPlayerProfileState extends State<VideoPlayerProfile> {
                                   // Share-Button
                                   IconButton(
                                     onPressed: () {
-                                      Share.share(
-                                          clickedVideoInfo.videoUrl!.toString());
+                                      Share.share(clickedVideoInfo.videoUrl!
+                                          .toString());
                                     },
                                     icon: const Icon(
                                       Icons.share,
